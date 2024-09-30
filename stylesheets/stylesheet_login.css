@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'Via Appia';
+    src: url('stylesheets/fonts/Via Appia.ttf') format('truetype');
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #EAD8C1;
+
+}
+.main-header{
+    position: fixed;
+    top: -100px;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 20px 0;
+    z-index: 10;
+}
+.logo-text {
+    background: rgb(255, 255, 255);
+    font-family: 'Via Appia';
+    margin-bottom: 1rem;
+    color: #000000;
+    text-align: center;
+    font-size: 160px;
+  }
+.login-container {
+    background-color: #A58E6F; 
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    z-index: 1;
+}
+.login-container h1 {
+    font-family: 'Georgia', serif;
+    margin-bottom: 1rem;
+    color: #000000;
+    font-size: 50px;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.login-container input[type="submit"] {
+    background-color: #6E9FBA;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.login-container input[type="submit"]:hover {
+    background-color:#55BFFA;
+}
+.login-container button[type="button"] {
+    background-color: #6E9FBA;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.login-container button[type="button"]:hover {
+    background-color: #55BFFA;
+}
