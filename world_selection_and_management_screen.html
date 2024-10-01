@@ -26,28 +26,23 @@
         <section class="create-world-section">
             <h2>Create a New World</h2>
             <form id="create-world-form">
-                <label for="world-name">World Name:</label>
-                <input type="text" id="world-name" name="worldName" required>
-                <label for="world-description">Description:</label>
-                <textarea id="world-description" name="worldDescription" rows="4" required></textarea>
-                <button type="submit" id="create-world-button">Create World</button>
+                <div class="form-group">
+                    <label for="world-name">World Name:</label>
+                    <input type="text" id="world-name" name="worldName" required>
+                </div>
+                <div class="form-group">
+                    <label for="world-description">Description:</label>
+                    <textarea id="world-description" name="worldDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="create-world-button">Create World</button>
+                </div>
             </form>
         </section>
-
         <!-- List of Worlds -->
         <section class="worlds-list">
             <h2>Your Worlds</h2>
             <div id="worlds-container">
-                <!-- Dynamic list of created worlds will appear here -->
-                <!-- Example World Structure -->
-                <!--
-                <div class="world-card" data-world-id="1">
-                    <h3>World Name</h3>
-                    <p>Short description of the world...</p>
-                    <button class="delete-world-button" onclick="deleteWorld(1)">Delete</button>
-                    <button class="open-world-button" onclick="openWorld(1)">Open World</button>
-                </div>
-                -->
             </div>
         </section>
     </main>
@@ -55,86 +50,6 @@
     <footer>
         <p>&copy; 2024 Zach Hightower</p>
     </footer>
-
-    <script>
-        // Function to handle signing out
-        function signOut() {
-            window.location.href = 'login_page.html'; // Redirect to login page
-        }
-
-        // Function to dynamically load user's created worlds
-        function loadWorlds() {
-            // Logic to retrieve and display worlds (mocked here)
-            const worldsContainer = document.getElementById('worlds-container');
-            worldsContainer.innerHTML = ''; // Clear current content
-
-            // Example data for worlds (replace with dynamic data from server)
-            const worlds = [
-                { id: 1, name: 'Project Alpha', description: 'A futuristic world of innovation.' },
-                { id: 2, name: 'Fantasy Realm', description: 'A medieval world with dragons and wizards.' }
-            ];
-
-            worlds.forEach(world => {
-                const worldCard = document.createElement('div');
-                worldCard.classList.add('world-card');
-                worldCard.setAttribute('data-world-id', world.id);
-                worldCard.innerHTML = `
-                    <h3>${world.name}</h3>
-                    <p>${world.description}</p>
-                    <button class="delete-world-button" onclick="deleteWorld(${world.id})">Delete</button>
-                    <button class="open-world-button" onclick="openWorld(${world.id})">Open World</button>
-                `;
-                worldsContainer.appendChild(worldCard);
-            });
-        }
-
-        // Function to create a new world
-        document.getElementById('create-world-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const worldName = document.getElementById('world-name').value;
-            const worldDescription = document.getElementById('world-description').value;
-
-            // Logic to send new world to the server (mocked here)
-            const newWorld = {
-                id: Date.now(), // Unique ID for the new world
-                name: worldName,
-                description: worldDescription
-            };
-
-            // Add new world to the UI (without reloading)
-            const worldsContainer = document.getElementById('worlds-container');
-            const worldCard = document.createElement('div');
-            worldCard.classList.add('world-card');
-            worldCard.setAttribute('data-world-id', newWorld.id);
-            worldCard.innerHTML = `
-                <h3>${newWorld.name}</h3>
-                <p>${newWorld.description}</p>
-                <button class="delete-world-button" onclick="deleteWorld(${newWorld.id})">Delete</button>
-                <button class="open-world-button" onclick="openWorld(${newWorld.id})">Open World</button>
-            `;
-            worldsContainer.appendChild(worldCard);
-
-            // Clear form inputs
-            document.getElementById('world-name').value = '';
-            document.getElementById('world-description').value = '';
-        });
-
-        // Function to delete a world
-        function deleteWorld(id) {
-            // Logic to delete world (mocked here)
-            const worldCard = document.querySelector(`.world-card[data-world-id='${id}']`);
-            worldCard.remove();
-        }
-
-        // Function to open a world (redirect to a new page)
-        function openWorld(id) {
-            window.location.href = `world.html?id=${id}`; // Open the selected world
-        }
-
-        // Load worlds when the page is loaded
-        window.onload = loadWorlds;
-    </script>
 </body>
 
 </html>
