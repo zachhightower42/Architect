@@ -7,7 +7,7 @@
         var storedUsername = sessionStorage.getItem("username");
         var storedPassword = sessionStorage.getItem("password");
       
-        // Debugging output
+        // Debug output (needed this because the mockup was implemented using local storage and that kept wiping for every new page)
         console.log("Login - Username entered:", enteredUsername);
         console.log("Login - Password entered:", enteredPassword);
         console.log("Login - Username stored:", storedUsername);
@@ -17,7 +17,7 @@
         // Check if credentials are stored
         if (!storedUsername || !storedPassword) {
           alert("No account found. Please sign up first.");
-          return false; // Prevent form submission
+          return false; 
         }
       
         // Check if entered username and password match stored credentials
@@ -29,7 +29,7 @@
           return true;
         } else {
           alert("Invalid username or password. Please try again.");
-          return false; // Prevent form submission
+          return false; 
         }
       }
       

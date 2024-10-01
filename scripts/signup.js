@@ -5,13 +5,13 @@ function validateForm() {
     var password = document.getElementById("password").value.trim();
     var confirmPassword = document.getElementById("password_confirm").value.trim();
   
-    // Check if passwords match
+    // Check passwords match
     if (password !== confirmPassword) {
       alert("Passwords do not match. Please try again.");
-      return false; // Prevent form submission
+      return false; 
     }
   
-    // Save user data to sessionStorage
+    // Save user data
     sessionStorage.setItem("username", username);
     sessionStorage.setItem("email", email);
     sessionStorage.setItem("password", password);
@@ -23,8 +23,8 @@ function validateForm() {
     alert("Signup successful! Redirecting to login page.");
     setTimeout(function() {
       window.location.href = 'login_page.html';
-    }, 0); // Redirect after alert
+    }, 0); 
   
-    return true; // Allow form submission
+    return true; 
   }
   
