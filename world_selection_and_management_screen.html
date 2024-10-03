@@ -1,163 +1,57 @@
 <!-- signup-->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Worlds Dashboard</title>
-    <link rel="stylesheet" href="stylesheets/stylesheet_management.css">
+    <link rel="stylesheet" href="stylesheets/stylesheet_management.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <script src="scripts/management.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <nav class="navbar">
-            <h1>Worlds Dashboard</h1>
-            <div class="nav-links">
-                <button id="signout-button" onclick="signOut()">Sign Out</button>
-            </div>
-        </nav>
+      <nav class="navbar">
+        <h1>Worlds Dashboard</h1>
+        <div class="nav-links">
+          <button id="signout-button" onclick="signOut()">Sign Out</button>
+        </div>
+      </nav>
     </header>
 
     <main>
-        <!-- Create New World -->
-        <section class="create-world-section">
-            <h2>Create a New World</h2>
-            <form id="create-world-form">
-                <div class="form-group">
-                    <label for="world-name">World Name:</label>
-                    <input type="text" id="world-name" name="worldName" required>
-                </div>
-                <div class="form-group">
-                    <label for="world-description">Description:</label>
-                    <textarea id="world-description" name="worldDescription" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit" id="create-world-button">Create World</button>
-                </div>
-            </form>
-        </section>
-        <!-- List of Worlds -->
-        <section class="worlds-list">
-            <h2>Your Worlds</h2>
-            <div id="worlds-container">
-            </div>
-        </section>
+      <!-- Create New World -->
+      <section class="create-world-section">
+        <h2>Create a New World</h2>
+        <form id="create-world-form">
+          <div class="form-group">
+            <label for="world-name">World Name:</label>
+            <input type="text" id="world-name" name="worldName" required />
+          </div>
+          <div class="form-group">
+            <label for="world-description">Description:</label>
+            <textarea
+              id="world-description"
+              name="worldDescription"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" id="create-world-button">Create World</button>
+          </div>
+        </form>
+      </section>
+      <!-- List of Worlds -->
+      <section class="worlds-list">
+        <h2>Your Worlds</h2>
+        <div id="worlds-container"></div>
+      </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Zach Hightower</p>
+      <p>&copy; 2024 Zach Hightower</p>
     </footer>
-</body>
-
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
