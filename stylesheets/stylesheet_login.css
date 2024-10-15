@@ -1,3 +1,8 @@
+/* stylesheet_login.css
+ * This stylesheet contains styles for the login page.
+ * It includes custom font definitions, layout styles, and form input styles.
+ */
+
 @font-face {
   font-family: "Via Appia";
   src: url("stylesheets/fonts/Via Appia.ttf") format("truetype");

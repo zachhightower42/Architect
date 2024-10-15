@@ -1,3 +1,8 @@
+/**
+ * This file contains functions related to user login functionality.
+ * It includes a function to validate user credentials against stored data.
+ */
+
 //login
 function validateLogin() {
   var enteredUsername = document

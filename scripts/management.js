@@ -1,3 +1,9 @@
+/**
+ * Management script for handling user authentication and world management.
+ * This file contains functions for signing out, loading worlds, and creating new worlds.
+ * It also includes event listeners for form submission and world interaction.
+ */
+
 //management
 
 function signOut() {
@@ -27,14 +33,13 @@ function loadWorlds() {
     worldCard.classList.add("world-card");
     worldCard.setAttribute("data-world-id", world.id);
     worldCard.innerHTML = `
-                <h3>${world.name}</h3>
-                <p>${world.description}</p>
-                <button class="delete-world-button" onclick="deleteWorld(${world.id})">Delete</button>
-                <button class="open-world-button" onclick="openWorld(${world.id})">Open World</button>
-            `;
+    <h3>${world.name}</h3>
+    <p>${world.description}</p>
+    <button class="delete-world-button" onclick="deleteWorld(${world.id})">Delete</button>
+    <button class="open-world-button" onclick="openWorld(${world.id})">Open World</button>
+  `;
     worldsContainer.appendChild(worldCard);
-  });
-}
+  });}
 
 document
   .getElementById("create-world-form")

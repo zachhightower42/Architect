@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map View</title>
+    <link rel="stylesheet" href="stylesheets/stylesheet_management.css">
+    <link rel="stylesheet" href="stylesheets/map_view.css">
+    <script src="scripts/map_view.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-left">
+                <h1>Map View</h1>
+                <div class="nav-links">
+                    <button id="back-button" onclick="goBack()">Back to Worlds</button>
+                    <div class="dropdown">
+                        <button class="dropbtn">Tools</button>
+                        <div class="dropdown-content">
+                            <a href="#" id="create-location">Create a Location</a>
+                            <a href="#" id="connect-locations">Connect Locations</a>
+                            <a href="#" id="edit-location">Edit Location</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="map-section">
+            <canvas id="mapCanvas" width="1000" height="800"></canvas>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Zach Hightower</p>
+    </footer>
+</body>
+</html>

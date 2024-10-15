@@ -1,4 +1,19 @@
-/*management*/
+/*
+ * stylesheet_management.css
+ * 
+ * This stylesheet contains styles for the management interface of the application.
+ * It includes styles for the overall layout, header, navigation, and main content area.
+ * 
+ * The stylesheet uses a color scheme based on earthy tones, with a custom font for headings.
+ * 
+ * Key components styled in this file:
+ * - Body: Sets the overall layout and background color
+ * - Header: Styles for the sticky header and navigation bar
+ * - Main content: Styles for the main content area, including world creation and listing sections
+ * 
+ * Custom font:
+ * - "Via Appia" is used as a custom font, loaded from a local file
+ */
 @font-face {
   font-family: "Via Appia";
   src: url("stylesheets/fonts/Via Appia.ttf") format("truetype");

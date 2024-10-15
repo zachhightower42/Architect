@@ -1,3 +1,10 @@
+/**
+ * This file contains the signup functionality for the application.
+ * It includes form validation and user data storage in session storage.
+ * 
+ * @module signup
+ */
+
 //signup
 function validateForm() {
   var username = document.querySelector("input[name='username']").value.trim();
