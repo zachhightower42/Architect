@@ -6,7 +6,6 @@
     <title>Map View</title>
     <link rel="stylesheet" href="stylesheets/stylesheet_management.css">
     <link rel="stylesheet" href="stylesheets/map_view.css">
-    <script src="scripts/map_view.js" defer></script>
 </head>
 <body>
     <header>
@@ -21,6 +20,7 @@
                             <a href="#" id="create-location">Create a Location</a>
                             <a href="#" id="connect-locations">Connect Locations</a>
                             <a href="#" id="edit-location">Edit Location</a>
+                            <a href="#" id="enter-location">Enter Location</a>
                         </div>
                     </div>
                 </div>
@@ -29,11 +29,43 @@
     </header>
     <main>
         <section class="map-section">
-            <canvas id="mapCanvas" width="1000" height="800"></canvas>
+            <canvas id="mapCanvas"></canvas>
+            <div id="sidePane" class="side-pane">
+                <div class="side-pane-header">
+                    <h2 id="locationTitle">Location Name</h2>
+                    <button id="closeSidePane" class="close-button">×</button>
+                </div>
+                <div class="entries-section">
+                    <button id="addEntryButton" class="add-entry-button">+ Add Entry</button>
+                    <ul id="entriesList" class="entries-list"></ul>
+                    <div id="entryDetails" class="entry-details" style="display: none;">
+                        <div class="entry-header">
+                            <input type="text" id="entryHeader" placeholder="Header" readonly>
+                            <div class="mode-toggle">
+                                <button id="readModeButton" class="mode-button active">Read</button>
+                                <button id="editModeButton" class="mode-button">Edit</button>
+                            </div>
+                        </div>
+                        <textarea id="entryBody" placeholder="Body" readonly></textarea>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
         <p>© 2024 Zach Hightower</p>
     </footer>
 </body>
+<script src="scripts/map_view.js"></script>
 </html>
+
+<!-- Modal for adding a new location -->
+<div id="locationModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close-button">×</span>
+        <h2>Create Location</h2>
+        <label for="locationName">Location Name:</label>
+        <input type="text" id="locationName" name="locationName">
+        <button id="addLocationButton">Add Location</button>
+    </div>
+</div>

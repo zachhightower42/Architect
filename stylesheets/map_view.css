@@ -14,7 +14,7 @@
 .nav-links {
     display: flex;
     align-items: center;
-    margin-left: 20px; /* Add some space between the title and the buttons */
+    margin-left: 20px;
 }
 
 button, .dropbtn {
@@ -24,7 +24,7 @@ button, .dropbtn {
     font-size: 16px;
     border: none;
     cursor: pointer;
-    margin-left: 10px; /* Add space between buttons */
+    margin-left: 10px;
 }
 
 .dropdown {
@@ -61,17 +61,164 @@ button, .dropbtn {
 }
 
 .map-section {
+    position: relative;
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: #a58e6f;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    height: calc(100vh - 70px);
+    margin: 0;
+    padding: 0;
 }
 
-canvas {
+/* Make the canvas fill the container */
+#mapCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Modal container - hidden by default */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 8px;
+}
+
+/* Close button */
+.close-button {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #aaa;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Side pane styles */
+.side-pane {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100%;
+    background-color: #fafafa;
+    border-left: 1px solid #ccc;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+}
+
+.side-pane-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #eee;
+    border-bottom: 1px solid #ccc;
+}
+
+.side-pane-header h2 {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 18px;
+}
+
+.entries-section {
+    padding: 10px;
+}
+
+.add-entry-button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.entries-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.entries-list li {
+    padding: 6px;
+    background-color: #ddd;
+    margin-bottom: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.entries-list li:hover {
+    background-color: #ccc;
+}
+
+.entry-details {
+    margin-top: 10px;
+}
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.entry-header input {
+    flex-grow: 1;
+    padding: 6px;
+    font-size: 14px;
+}
+
+.mode-toggle {
+    display: flex;
+    margin-left: 5px;
+}
+
+.mode-button {
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: #eee;
     border: 1px solid #ccc;
-    background-color: #fff;
+    margin-left: 2px;
+    font-size: 12px;
+}
+
+.mode-button.active {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+#entryBody {
+    width: 100%;
+    height: 120px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+#entryBody[readonly] {
+    background-color: #f9f9f9;
+}
+
+#entryHeader[readonly] {
+    background-color: #f9f9f9;
 }

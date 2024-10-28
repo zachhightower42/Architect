@@ -18,12 +18,13 @@ body {
 }
 .main-header {
   position: fixed;
-  top: -100px;
+  top: 0; /* Positioned at the top of the page */
   width: 100%;
   text-align: center;
   background-color: rgba(255, 255, 255, 0);
   padding: 20px 0;
-  z-index: 10;
+  z-index: 0; /* Lower z-index to place behind other elements */
+  pointer-events: none; /* Prevent user interaction */
 }
 .logo-text {
   background: rgb(255, 255, 255);
@@ -31,7 +32,7 @@ body {
   margin-bottom: 1rem;
   color: #000000;
   text-align: center;
-  font-size: 160px;
+  font-size: calc(20px + 5vw); /* Responsive font size */
 }
 .signup-container {
   background-color: #a58e6f;
