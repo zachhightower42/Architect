@@ -8,14 +8,17 @@ function validateLogin() {
   var enteredUsername = document.querySelector("input[name='username']").value.trim();
   var enteredPassword = document.querySelector("input[name='password']").value.trim();
 
-  fetch('database/login_handler.php', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `username=${encodeURIComponent(enteredUsername)}&password=${encodeURIComponent(enteredPassword)}`
-  })
-  .then(response => response.json())
+fetch('database/login_handler.php', {
+  method: 'POST',
+  headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+  },
+  body: `username=${encodeURIComponent(enteredUsername)}&password=${encodeURIComponent(enteredPassword)}`
+})
+.then(response => {
+  console.log('Raw response:', response)
+  return response.json()
+})
   .then(data => {
       if (data.success) {
           alert("Login successful!");

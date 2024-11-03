@@ -25,7 +25,7 @@ function loadWorlds() {
       id: 2,
       name: "Pax Equus",
       description:
-        "Rome has been taken overy by magical horses and only Caligula can stop them.",
+        "Rome has been taken over by magical horses and only Caligula can stop them.",
     },
   ];
   worlds.forEach((world) => {

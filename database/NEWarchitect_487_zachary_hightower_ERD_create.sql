@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-10-28 01:27:07.199
+-- Last modification date: 2024-10-29 00:47:50.589
 
 -- tables
 -- Table: entry
@@ -28,7 +28,7 @@ CREATE TABLE user (
     user_name varchar(50)  NOT NULL,
     email varchar(100)  NOT NULL,
     password varchar(255)  NOT NULL,
-    user_id int AUTO_INCREMENT  NOT NULL,
+    user_id int  NOT NULL AUTO_INCREMENT,
     CONSTRAINT user_pk PRIMARY KEY (user_id)
 );
 
