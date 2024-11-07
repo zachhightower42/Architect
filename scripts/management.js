@@ -11,73 +11,89 @@ function signOut() {
 }
 
 function loadWorlds() {
-  // Mockup for retrieving data for the worlds from the database
   const worldsContainer = document.getElementById("worlds-container");
   worldsContainer.innerHTML = "";
-  // Example data for the two worlds that are used for the demo
-  const worlds = [
-    {
-      id: 1,
-      name: "Alpha Centaurii",
-      description: "A world beyond the stars, with an infinitude of potential.",
-    },
-    {
-      id: 2,
-      name: "Pax Equus",
-      description:
-        "Rome has been taken over by magical horses and only Caligula can stop them.",
-    },
-  ];
-  worlds.forEach((world) => {
-    const worldCard = document.createElement("div");
-    worldCard.classList.add("world-card");
-    worldCard.setAttribute("data-world-id", world.id);
-    worldCard.innerHTML = `
-    <h3>${world.name}</h3>
-    <p>${world.description}</p>
-    <button class="delete-world-button" onclick="deleteWorld(${world.id})">Delete</button>
-    <button class="open-world-button" onclick="openWorld(${world.id})">Open World</button>
-  `;
-    worldsContainer.appendChild(worldCard);
-  });}
 
+  // Fetch worlds from the server
+  fetch('database/world_handler.php?action=get_worlds')
+    .then(response => response.json())
+    .then(worlds => {
+      worlds.forEach((world) => {
+        const worldCard = document.createElement("div");
+        worldCard.classList.add("world-card");
+        worldCard.setAttribute("data-world-id", world.world_id);
+        worldCard.innerHTML = `
+          <h3>${world.world_name}</h3>
+          <p>${world.description}</p>
+          <button class="delete-world-button" onclick="deleteWorld(${world.world_id})">Delete</button>
+          <button class="open-world-button" onclick="openWorld(${world.world_id})">Open World</button>
+        `;
+        worldsContainer.appendChild(worldCard);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching worlds:', error);
+    });
+}
 document
   .getElementById("create-world-form")
   .addEventListener("submit", function (e) {
     e.preventDefault();
     const worldName = document.getElementById("world-name").value;
     const worldDescription = document.getElementById("world-description").value;
-    // Logic to send new world to the database mockup
-    const newWorld = {
-      id: Date.now(),
-      name: worldName,
-      description: worldDescription,
-    };
 
-    const worldsContainer = document.getElementById("worlds-container");
-    const worldCard = document.createElement("div");
-    worldCard.classList.add("world-card");
-    worldCard.setAttribute("data-world-id", newWorld.id);
-    worldCard.innerHTML = `
-            <h3>${newWorld.name}</h3>
-            <p>${newWorld.description}</p>
-            <button class="delete-world-button" onclick="deleteWorld(${newWorld.id})">Delete</button>
-            <button class="open-world-button" onclick="openWorld(${newWorld.id})">Open World</button>
-        `;
-    worldsContainer.appendChild(worldCard);
-
-    document.getElementById("world-name").value = "";
-    document.getElementById("world-description").value = "";
+    // Send new world data to the server
+    fetch('database/world_handler.php?action=create_world', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        world_name: worldName,
+        description: worldDescription,
+        user_id: userId // Replace with actual user ID
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Reload worlds
+        loadWorlds();
+        // Clear form
+        document.getElementById("world-name").value = "";
+        document.getElementById("world-description").value = "";
+      } else {
+        console.error('Error creating world:', data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   });
-
 function deleteWorld(id) {
-  // Logic to delete world from database mockup
-  const worldCard = document.querySelector(
-    `.world-card[data-world-id='${id}']`
-  );
-  worldCard.remove();
-}
-// Mockup for opening a world
+  if (confirm("Are you sure you want to delete this world? This action cannot be undone.")) {
+    // Send delete request to the server
+    fetch(`database/world_handler.php?action=delete_world`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ world_id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Reload worlds
+        loadWorlds();
+      } else {
+        console.error('Error deleting world:', data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+}// Mockup for opening a world
 function openWorld(id) {
   window.location.href = `world.html?id=${id}`; // Open the selected world
 }
