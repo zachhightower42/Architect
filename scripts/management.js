@@ -35,67 +35,81 @@ function loadWorlds() {
       console.error('Error fetching worlds:', error);
     });
 }
-document
-  .getElementById("create-world-form")
-  .addEventListener("submit", function (e) {
-    e.preventDefault();
-    const worldName = document.getElementById("world-name").value;
-    const worldDescription = document.getElementById("world-description").value;
+document.getElementById("create-world-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const worldName = document.getElementById("world-name").value;
+  const worldDescription = document.getElementById("world-description").value;
 
-    // Send new world data to the server
-    fetch('database/world_handler.php?action=create_world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        world_name: worldName,
-        description: worldDescription,
-        user_id: userId // Replace with actual user ID
-      })
+  // Send new world data to the server
+  fetch('database/world_handler.php?action=create_world', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      world_name: worldName,
+      description: worldDescription,
+      user_id: userId // Ensure userId is defined and correct
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Reload worlds
-        loadWorlds();
-        // Clear form
-        document.getElementById("world-name").value = "";
-        document.getElementById("world-description").value = "";
-      } else {
-        console.error('Error creating world:', data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Reload worlds
+      loadWorlds();
+      // Clear form
+      document.getElementById("world-name").value = "";
+      document.getElementById("world-description").value = "";
+    } else {
+      console.error('Error creating world:', data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
   });
-function deleteWorld(id) {
-  if (confirm("Are you sure you want to delete this world? This action cannot be undone.")) {
-    // Send delete request to the server
-    fetch(`database/world_handler.php?action=delete_world`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ world_id: id })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Reload worlds
-        loadWorlds();
-      } else {
-        console.error('Error deleting world:', data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+});
+  
+
+  function deleteWorld(id) {
+    if (confirm("Are you sure you want to delete this world? This action cannot be undone.")) {
+      // Send delete request to the server
+      fetch(`database/world_handler.php?action=delete_world`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ world_id: id })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Reload worlds
+          loadWorlds();
+        } else {
+          console.error('Error deleting world:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
   }
-}// Mockup for opening a world
+
+  // Mockup for opening a world
 function openWorld(id) {
   window.location.href = `world.html?id=${id}`; // Open the selected world
 }
-// Onload effects
-window.onload = loadWorlds;
+window.onload = function() {
+    // First fetch the user ID
+    fetch('database/get_session.php')
+        .then(response => response.json())
+        .then(data => {
+            userId = data.user_id;
+            // Then load the worlds
+            loadWorlds();
+        })
+        .catch(error => {
+            console.error('Error fetching user session:', error);
+            window.location.href = 'login_page.html';
+        });
+};

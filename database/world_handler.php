@@ -11,9 +11,9 @@ if ($action == 'create_world') {
   $user_id = $data['user_id'];
 
   // Insert the new world into the database
-  $stmt = $conn->prepare("INSERT INTO world (world_name, user_id, icon_path_world) VALUES (?, ?, ?)");
+  $stmt = $dbConn->prepare("INSERT INTO world (world_name, user_id, icon_path_world, world_desc) VALUES (?, ?, ?, ?)");
   $icon_path_world = ''; // Set default icon path or handle as needed
-  $stmt->bind_param('sis', $world_name, $user_id, $icon_path_world);
+  $stmt->bind_param('siss', $world_name, $user_id, $icon_path_world, $description);
 
   if ($stmt->execute()) {
     echo json_encode(['success' => true]);
@@ -22,7 +22,6 @@ if ($action == 'create_world') {
   }
   $stmt->close();
 }
-
 if ($action == 'delete_world') {
   // Get the raw POST data
   $data = json_decode(file_get_contents('php://input'), true);

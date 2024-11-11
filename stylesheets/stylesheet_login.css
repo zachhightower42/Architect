@@ -5,7 +5,7 @@
 
 @font-face {
   font-family: "Via Appia";
-  src: url("stylesheets/fonts/Via Appia.ttf") format("truetype");
+  src: url("./fonts/Via Appia.ttf") format("truetype");
 }
 body {
   font-family: Arial, sans-serif;

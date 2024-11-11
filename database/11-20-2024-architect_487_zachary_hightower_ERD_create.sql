@@ -1,25 +1,25 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-10-29 00:47:50.589
+-- Last modification date: 2024-11-11 02:25:32.561
 
 -- tables
 -- Table: entry
 CREATE TABLE entry (
-    entry_id int  NOT NULL,
+    entry_id int  NOT NULL AUTO_INCREMENT,
     entry_name varchar(100)  NOT NULL,
-    user_id int  NOT NULL,
     icon_path_entry varchar(100)  NOT NULL,
-    world_id int  NOT NULL,
     location_id int  NOT NULL,
+    entry_body varchar(500)  NOT NULL,
     CONSTRAINT entry_pk PRIMARY KEY (entry_id)
 );
 
 -- Table: location
 CREATE TABLE location (
-    location_id int  NOT NULL,
+    location_id int  NOT NULL AUTO_INCREMENT,
     location_name varchar(100)  NOT NULL,
-    user_id int  NOT NULL,
     icon_path_location varchar(100)  NOT NULL,
     world_id int  NOT NULL,
+    position_X float  NOT NULL,
+    position_Y float  NOT NULL,
     CONSTRAINT location_pk PRIMARY KEY (location_id)
 );
 
@@ -34,10 +34,11 @@ CREATE TABLE user (
 
 -- Table: world
 CREATE TABLE world (
-    world_id int  NOT NULL,
+    world_id int  NOT NULL AUTO_INCREMENT,
     world_name varchar(100)  NOT NULL,
     user_id int  NOT NULL,
     icon_path_world varchar(100)  NOT NULL,
+    world_desc varchar(300)  NOT NULL,
     CONSTRAINT world_pk PRIMARY KEY (world_id)
 );
 
