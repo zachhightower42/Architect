@@ -3,9 +3,9 @@
  * It includes custom font definitions, layout styles, and form input styles.
  */
 
-@font-face {
+ @font-face {
   font-family: "Via Appia";
-  src: url("stylesheets/fonts/Via Appia.ttf") format("truetype");
+  src: url("./fonts/Via Appia.ttf") format("truetype");
 }
 body {
   font-family: Arial, sans-serif;

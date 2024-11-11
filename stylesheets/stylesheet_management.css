@@ -14,9 +14,9 @@
  * Custom font:
  * - "Via Appia" is used as a custom font, loaded from a local file
  */
-@font-face {
+ @font-face {
   font-family: "Via Appia";
-  src: url("stylesheets/fonts/Via Appia.ttf") format("truetype");
+  src: url("./fonts/Via Appia.ttf") format("truetype");
 }
 
 body {
