@@ -1,3 +1,22 @@
+
+
+// Global variables
+let locations = [];
+let connections = [];
+let currentLine = null;
+let currentMousePosition = { x: 0, y: 0 };
+let activeTool = 'create';
+let draggingLocation = null;
+let offsetX, offsetY;
+let newLocationX, newLocationY;
+let activeLocation = null;
+let activeEntry = null;
+
+// Default icon for locations
+const locationIcon = new Image();
+locationIcon.src = 'assets/architect default location node.png';
+
+
 // Canvas setup
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
@@ -9,7 +28,7 @@ function resizeCanvas() {
     redrawCanvas();
 }
 
-// Function to redraw the canvas
+
 function redrawCanvas() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -23,23 +42,33 @@ function redrawCanvas() {
         ctx.lineWidth = 2;
         ctx.stroke();
     });
-
     // Draw locations
     locations.forEach(loc => {
-        ctx.beginPath();
-        ctx.arc(loc.x, loc.y, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = 'blue';
-        ctx.fill();
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        // Draw the location icon
+        const iconSize = 20; // This matches the current circle diameter (2 * radius)
+        ctx.drawImage(
+            locationIcon, 
+            loc.x - iconSize/2, 
+            loc.y - iconSize/2, 
+            iconSize, 
+            iconSize
+        );
 
-        ctx.fillStyle = 'black';
-        ctx.font = '12px Arial';
-        ctx.fillText(loc.name, loc.x + 15, loc.y + 5);
+        // Create or update text element
+        let textElement = document.getElementById(`location-text-${loc.name}`);
+        if (!textElement) {
+            textElement = document.createElement('div');
+            textElement.id = `location-text-${loc.name}`;
+            textElement.className = 'location-text';
+            document.querySelector('.map-section').appendChild(textElement);
+        }
+        
+        // Position the text
+        textElement.style.left = `${loc.x + 15}px`;
+        textElement.style.top = `${loc.y - 10}px`;
+        textElement.textContent = loc.name;
     });
-
-    // Draw current line if connecting locations
+    // If a line is currently being drawn (for connecting locations)
     if (currentLine && currentLine.start) {
         ctx.beginPath();
         ctx.moveTo(currentLine.start.x, currentLine.start.y);
@@ -50,17 +79,6 @@ function redrawCanvas() {
     }
 }
 
-// Global variables
-let locations = [];
-let connections = [];
-let currentLine = null;
-let currentMousePosition = { x: 0, y: 0 };
-let activeTool = 'create';
-let draggingLocation = null;
-let offsetX, offsetY;
-let newLocationX, newLocationY;
-let activeLocation = null;
-let activeEntry = null;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -309,47 +327,6 @@ function setEntryMode(mode) {
 }
 });
 
-function redrawCanvas() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw connections
-    connections.forEach(([start, end]) => {
-        ctx.beginPath();
-        ctx.moveTo(start.x, start.y);
-        ctx.lineTo(end.x, end.y);
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    });
-
-    // Draw locations
-    locations.forEach(loc => {
-        // Draw the location circle
-        ctx.beginPath();
-        ctx.arc(loc.x, loc.y, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = 'blue';
-        ctx.fill();
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // Draw the location name
-        ctx.fillStyle = 'black';
-        ctx.font = '12px Arial';
-        ctx.fillText(loc.name, loc.x + 15, loc.y + 5);
-    });
-
-    // If a line is currently being drawn (for connecting locations)
-    if (currentLine && currentLine.start) {
-        ctx.beginPath();
-        ctx.moveTo(currentLine.start.x, currentLine.start.y);
-        ctx.lineTo(currentMousePosition.x, currentMousePosition.y);
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
-}
 
 function addLocation(name, x, y) {
     const location = { name: name, x: x, y: y };

@@ -222,3 +222,13 @@ button, .dropbtn {
 #entryHeader[readonly] {
     background-color: #f9f9f9;
 }
+
+/* Add z-index to ensure text renders above other elements */
+.location-text {
+    position: absolute;
+    z-index: 20;
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 1px 1px 2px white;
+}
