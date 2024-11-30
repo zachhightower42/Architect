@@ -1,20 +1,38 @@
+<!--
+    Map View HTML Template
+    This template provides the structure for the map view interface, including:
+    - Navigation bar with tools for location management
+    - Interactive canvas for map display
+    - Side pane for location details and entries
+    - Modals for location creation and icon customization
+    
+    Dependencies:
+    - stylesheet_management.css
+    - map_view.css
+    - jspdf library
+    - html2canvas library
+    - map_view.js
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Map View</title>
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="stylesheets/stylesheet_management.css">
     <link rel="stylesheet" href="stylesheets/map_view.css">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body>
+    <!-- Navigation Header -->
     <header>
         <nav class="navbar">
             <div class="nav-left">
                 <h1>Map View</h1>
                 <div class="nav-links">
                     <button id="back-button" onclick="goBack()">Back to Worlds</button>
+                    <!-- Tools Dropdown Menu -->
                     <div class="dropdown">
                         <button class="dropbtn">Tools</button>
                         <div class="dropdown-content">
@@ -24,14 +42,20 @@
                             <a href="#" id="enter-location">Enter Location</a>
                             <a href="#" id="customize-location">Customize Location</a>
                         </div>
+                    </div>
+                    <button id="export-pdf" class="dropbtn">Export PDF</button>
                 </div>
-                <button id="export-pdf" class="dropbtn">Export PDF</button>
             </div>
         </nav>
     </header>
+
+    <!-- Main Content Area -->
     <main>
         <section class="map-section">
+            <!-- Interactive Map Canvas -->
             <canvas id="mapCanvas"></canvas>
+            
+            <!-- Side Panel for Location Details -->
             <div id="sidePane" class="side-pane">
                 <div class="side-pane-header">
                     <h2 id="locationTitle">Location Name</h2>
@@ -54,32 +78,34 @@
             </div>
         </section>
     </main>
-    <footer>
-        <p>© 2024 Zach Hightower</p>
-    </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <footer></footer>
 
+    <!-- Location Creation Modal -->
+    <div id="locationModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close-button">×</span>
+            <h2>Create Location</h2>
+            <label for="locationName">Location Name:</label>
+            <input type="text" id="locationName" name="locationName">
+            <button id="addLocationButton">Add Location</button>
+        </div>
+    </div>
+
+    <!-- Icon Customization Modal -->
+    <div id="iconModal" class="modal">
+        <div class="modal-content">
+            <span id="closeIconModal" class="close-button">×</span>
+            <h2>Choose Location Icon</h2>
+            <div id="iconGrid" class="icon-grid"></div>
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- Application Script -->
+    <script src="scripts/map_view.js"></script>
 </body>
-<script src="scripts/map_view.js"></script>
 </html>
-
-<!-- Modal for adding a new location -->
-<div id="locationModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="close-button">×</span>
-        <h2>Create Location</h2>
-        <label for="locationName">Location Name:</label>
-        <input type="text" id="locationName" name="locationName">
-        <button id="addLocationButton">Add Location</button>
-    </div>
-</div>
-<!-- Modal for customizing location icons -->
-<div id="iconModal" class="modal">
-    <div class="modal-content">
-        <span id="closeIconModal" class="close-button">×</span>
-        <h2>Choose Location Icon</h2>
-        <div id="iconGrid" class="icon-grid"></div>
-    </div>
-</div>

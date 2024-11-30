@@ -1,8 +1,24 @@
+/* Map View Stylesheet
+ * This stylesheet controls the layout and appearance of the map interface
+ * including navigation, modals, side panes, and interactive elements.
+ * 
+ * Organization:
+ * 1. Navigation
+ * 2. Map Container
+ * 3. Modal Styles
+ * 4. Side Pane
+ * 5. Entry Management
+ * 6. Icons and Utilities
+ */
+
+/* =================
+ * 1. Navigation Bar
+ * ================= */
 .navbar {
     display: flex;
     align-items: center;
     padding: 1rem;
-    background-color: #a58e6f;;
+    background-color: #a58e6f;
     color: #fff;
 }
 
@@ -17,6 +33,7 @@
     margin-left: 20px;
 }
 
+/* Navigation Buttons and Dropdowns */
 button, .dropbtn {
     background-color: #6e9fba;
     color: white;
@@ -57,9 +74,12 @@ button, .dropbtn {
 }
 
 .dropdown:hover .dropbtn {
-    background-color:#55bffa;
+    background-color: #55bffa;
 }
 
+/* =================
+ * 2. Map Container
+ * ================= */
 .map-section {
     position: relative;
     width: 100%;
@@ -68,18 +88,19 @@ button, .dropbtn {
     padding: 0;
 }
 
-/* Make the canvas fill the container */
 #mapCanvas {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-/* Modal container - hidden by default */
+/* =================
+ * 3. Modal Styles
+ * ================= */
 .modal {
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -88,7 +109,6 @@ button, .dropbtn {
     pointer-events: auto;
 }
 
-/* Modal content */
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -97,7 +117,8 @@ button, .dropbtn {
     width: 80%;
     max-width: 500px;
     position: relative;
-}/* Close button */
+}
+
 .close-button {
     float: right;
     font-size: 28px;
@@ -114,7 +135,9 @@ button, .dropbtn {
     text-decoration: none;
 }
 
-/* Side pane styles */
+/* =================
+ * 4. Side Pane
+ * ================= */
 .side-pane {
     position: absolute;
     top: 0;
@@ -143,6 +166,9 @@ button, .dropbtn {
     font-size: 18px;
 }
 
+/* =================
+ * 5. Entry Management
+ * ================= */
 .entries-section {
     padding: 10px;
 }
@@ -188,6 +214,7 @@ button, .dropbtn {
     font-size: 14px;
 }
 
+/* Entry Mode Controls */
 .mode-toggle {
     display: flex;
     margin-left: 5px;
@@ -207,6 +234,7 @@ button, .dropbtn {
     font-weight: bold;
 }
 
+/* Entry Fields */
 #entryBody {
     width: 100%;
     height: 120px;
@@ -214,15 +242,14 @@ button, .dropbtn {
     font-size: 14px;
 }
 
-#entryBody[readonly] {
-    background-color: #f9f9f9;
-}
-
+#entryBody[readonly],
 #entryHeader[readonly] {
     background-color: #f9f9f9;
 }
 
-/* Add z-index to ensure text renders above other elements */
+/* =================
+ * 6. Icons and Utilities
+ * ================= */
 .location-text {
     position: absolute;
     z-index: 20;
@@ -240,6 +267,7 @@ button, .dropbtn {
 #export-pdf:hover {
     background-color: #55bffa;
 }
+
 .icon-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -247,10 +275,6 @@ button, .dropbtn {
     padding: 10px;
     max-height: 400px;
     overflow-y: auto;
-}
-
-.modal {
-    z-index: 1000;
 }
 
 .icon-option {

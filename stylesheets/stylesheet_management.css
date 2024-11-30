@@ -1,24 +1,24 @@
 /*
  * stylesheet_management.css
  * 
- * This stylesheet contains styles for the management interface of the application.
- * It includes styles for the overall layout, header, navigation, and main content area.
- * 
- * The stylesheet uses a color scheme based on earthy tones, with a custom font for headings.
- * 
- * Key components styled in this file:
- * - Body: Sets the overall layout and background color
- * - Header: Styles for the sticky header and navigation bar
- * - Main content: Styles for the main content area, including world creation and listing sections
- * 
- * Custom font:
- * - "Via Appia" is used as a custom font, loaded from a local file
+ * Purpose: Manages styles for the application's management interface
+ * Components:
+ * - Layout: Flexbox-based responsive layout
+ * - Header: Sticky navigation with branding
+ * - Content: World creation and listing sections
+ * - Forms: Input styling and management controls
+ * - Cards: World display cards with actions
+ * - Colors: Earth-tone color scheme (#ead8c1, #a58e6f, #6e9fba)
+ * - Typography: Custom "Via Appia" font for branding
  */
- @font-face {
+
+/* Custom font declaration for branding */
+@font-face {
   font-family: "Via Appia";
   src: url("./fonts/Via Appia.ttf") format("truetype");
 }
 
+/* Base layout structure */
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -28,6 +28,7 @@ body {
   background-color: #ead8c1;
 }
 
+/* Header and navigation styling */
 header {
   background-color: #a58e6f;
   padding: 1rem;
@@ -52,6 +53,7 @@ header {
   display: flex;
 }
 
+/* Main content area layout */
 main {
   flex: 1;
   padding: 2rem;
@@ -60,8 +62,10 @@ main {
   align-items: center;
 }
 
+/* Section containers styling */
 .create-world-section,
-.worlds-list {
+.worlds-list,
+.management-container {
   width: 100%;
   max-width: 800px;
   background-color: #a58e6f;
@@ -71,6 +75,7 @@ main {
   margin-bottom: 2rem;
 }
 
+/* Footer styling */
 footer {
   background-color: #a58e6f;
   color: #000000;
@@ -79,6 +84,7 @@ footer {
   margin-top: auto;
 }
 
+/* Logo and branding elements */
 .logo-text {
   background: rgb(255, 255, 255);
   font-family: "Via Appia";
@@ -88,13 +94,9 @@ footer {
   font-size: 160px;
 }
 
+/* Management container specific styles */
 .management-container {
-  background-color: #a58e6f;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 80%;
-  max-width: 800px;
   text-align: center;
   z-index: 1;
 }
@@ -106,9 +108,12 @@ footer {
   font-size: 50px;
 }
 
+/* Form elements styling */
 .management-container input[type="text"],
 .management-container input[type="password"],
-.management-container select {
+.management-container select,
+.form-group input[type="text"],
+.form-group textarea {
   width: 100%;
   padding: 0.5rem;
   margin: 0.25rem 0;
@@ -116,35 +121,19 @@ footer {
   border-radius: 4px;
 }
 
-.create-world-section form {
+/* Form layout */
+.create-world-section form,
+.form-group {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
 .form-group label {
   margin-bottom: 0.5rem;
 }
-.form-group input[type="text"],
-.form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 
-/* Add this new rule */
-.world-card button {
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-/* Update the existing button rule */
+/* Button styling */
 button,
 .world-card button {
   background-color: #6e9fba;
@@ -155,6 +144,8 @@ button,
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 button:hover,
@@ -162,10 +153,7 @@ button:hover,
   background-color: #55bffa;
 }
 
-.world-card button {
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
-}
+/* World card styling */
 .world-card {
   background-color: white;
   padding: 1rem;
@@ -186,11 +174,12 @@ button:hover,
   color: #333333;
 }
 
+/* Delete account button specific styling */
 #delete-account-button {
-    background-color: #ba6e6e;
-    margin-right: 10px;
+  background-color: #ba6e6e;
+  margin-right: 10px;
 }
 
 #delete-account-button:hover {
-    background-color: #fa5555;
+  background-color: #fa5555;
 }

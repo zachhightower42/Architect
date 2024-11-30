@@ -1,13 +1,21 @@
 /**
- * This file contains functions related to user login functionality.
- * It includes a function to validate user credentials against stored data.
+ * User Authentication Module
+ * 
+ * This JavaScript file handles user login functionality by validating credentials
+ * against the server-side database through a PHP endpoint. It manages form submission,
+ * server communication, and user redirection upon successful authentication.
  */
 
-//login
+/**
+ * Validates user login credentials and handles authentication process
+ * @returns {boolean} Returns false to prevent default form submission
+ */
 function validateLogin() {
+    // Get and sanitize user input from form fields
     var enteredUsername = document.querySelector("input[name='username']").value.trim();
     var enteredPassword = document.querySelector("input[name='password']").value.trim();
 
+    // Configure and send authentication request to server
     fetch('database/login_handler.php', {
       method: 'POST',
       headers: {
@@ -17,6 +25,7 @@ function validateLogin() {
     })
     .then(response => response.json())
     .then(data => {
+      // Handle server response and redirect on successful login
       if (data.success) {
         alert("Login successful!");
         window.location.href = "world_selection_and_management_screen.html";
@@ -25,6 +34,7 @@ function validateLogin() {
       }
     })
     .catch(error => {
+      // Handle any errors that occur during the login process
       console.error('Error:', error);
       alert("An error occurred during login. Please try again.");
     });

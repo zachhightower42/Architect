@@ -1,12 +1,15 @@
-<!-- world_selection_and_management_screen.html
-This file represents the World Selection and Management Screen for the application.
-It allows users to create new worlds, view their existing worlds, and manage them.
-The page includes a form for creating new worlds and a container to display the list of user's worlds.
-Key features:
-- Create new world form with name and description inputs
-- Display of existing worlds
-- Navigation bar with sign out functionality
-- Responsive design for various screen sizes
+<!--
+    World Selection and Management Screen
+    
+    Features:
+    - Create new worlds with name and description
+    - View and manage existing worlds
+    - Account management (sign out, delete account)
+    - Responsive design
+    
+    Dependencies:
+    - stylesheet_management.css for styling
+    - management.js for functionality
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,15 +17,19 @@ Key features:
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Worlds Dashboard</title>
+    
+    <!-- External dependencies -->
     <link rel="stylesheet" href="stylesheets/stylesheet_management.css" />
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="scripts/management.js" defer></script>
+    
+    <!-- Global Variables -->
     <script>
-        // This will store the user ID globally
-        let userId;
+        let userId; // Stores the current user's ID
     </script>
   </head>
   <body>
+    <!-- Navigation Header -->
     <header>
       <nav class="navbar">
         <h1>Worlds Dashboard</h1>
@@ -32,8 +39,9 @@ Key features:
         </div>
       </nav>
     </header>
+
     <main>
-      <!-- Create New World -->
+      <!-- World Creation Section -->
       <section class="create-world-section">
         <h2>Create a New World</h2>
         <form id="create-world-form">
@@ -50,15 +58,17 @@ Key features:
           </div>
         </form>
       </section>
-      <!-- List of Worlds -->
+
+      <!-- Worlds Display Section -->
       <section class="worlds-list">
         <h2>Your Worlds</h2>
         <div id="worlds-container"></div>
       </section>
     </main>
 
+    <!-- Page Footer -->
     <footer>
-      <p>&copy; 2024 Zach Hightower</p>
+      <p>© 2024 Zach Hightower</p>
     </footer>
   </body>
 </html>

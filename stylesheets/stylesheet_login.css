@@ -1,12 +1,20 @@
 /* stylesheet_login.css
- * This stylesheet contains styles for the login page.
- * It includes custom font definitions, layout styles, and form input styles.
+ * This stylesheet manages the login page appearance and layout.
+ * It includes:
+ * - Custom font loading for the logo
+ * - Responsive page layout with centered content
+ * - Styled login form with hover effects
+ * - Header with transparent background
+ * - Mobile-friendly design elements
  */
 
+/* Load custom font for logo text */
 @font-face {
   font-family: "Via Appia";
   src: url("./fonts/Via Appia.ttf") format("truetype");
 }
+
+/* Set up basic page layout with centered content */
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -16,27 +24,30 @@ body {
   margin: 0;
   background-color: #ead8c1;
 }
-/* Updated .main-header styles */
+
+/* Configure fixed header with transparent background */
 .main-header {
   position: fixed;
-  top: 0; /* Positioned at the top of the page */
+  top: 0;
   width: 100%;
   text-align: center;
   background-color: rgba(255, 255, 255, 0);
   padding: 20px 0;
-  z-index: 0; /* Lower z-index to place behind the login form */
-  pointer-events: none; /* Prevent user interaction */
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* Updated .logo-text styles */
+/* Style the logo text with responsive sizing */
 .logo-text {
   background: rgb(255, 255, 255);
   font-family: "Via Appia";
   margin-bottom: 1rem;
   color: #000000;
   text-align: center;
-  font-size: calc(20px + 5vw); /* Responsive font size */
+  font-size: calc(20px + 5vw);
 }
+
+/* Style the main login container */
 .login-container {
   background-color: #a58e6f;
   padding: 2rem;
@@ -46,12 +57,16 @@ body {
   text-align: center;
   z-index: 1;
 }
+
+/* Style the login form heading */
 .login-container h1 {
   font-family: "Georgia", serif;
   margin-bottom: 1rem;
   color: #000000;
   font-size: 50px;
 }
+
+/* Style form input fields */
 .login-container input[type="text"],
 .login-container input[type="password"] {
   width: 100%;
@@ -60,6 +75,8 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/* Style submit button and its hover state */
 .login-container input[type="submit"] {
   background-color: #6e9fba;
   color: #fff;
@@ -69,9 +86,12 @@ body {
   cursor: pointer;
   font-size: 1rem;
 }
+
 .login-container input[type="submit"]:hover {
   background-color: #55bffa;
 }
+
+/* Style regular buttons and their hover state */
 .login-container button[type="button"] {
   background-color: #6e9fba;
   color: #fff;
@@ -81,6 +101,7 @@ body {
   cursor: pointer;
   font-size: 1rem;
 }
+
 .login-container button[type="button"]:hover {
   background-color: #55bffa;
 }

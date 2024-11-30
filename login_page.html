@@ -1,34 +1,56 @@
-<!-- login-->
-<!-- 
-This file contains the HTML structure for the login page of the ARCHITECT application.
-It includes:
-- A header with the application logo
-- A login form with fields for username and password
-- A submit button for the login form
-- A button to navigate to the sign-up page
-The page is styled using stylesheet_login.css and includes functionality from login.js
+<!--
+   Login Page
+    Features:
+    - Responsive design for various screen sizes
+    - User authentication form
+    - Navigation to sign-up page
+    - Client-side validation
+    
+    Dependencies:
+    - stylesheet_login.css for styling
+    - login.js for form validation and functionality
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login page for ARCHITECT application">
     <title>Login Page</title>
+    
+    <!-- External dependencies -->
     <link rel="stylesheet" href="stylesheets/stylesheet_login.css">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="scripts/login.js" defer></script>
 </head>
 <body>
+    <!-- Application header with branding -->
     <header class="main-header">
         <h1 class="logo-text">ARCHITECT</h1>
     </header>
+
+    <!-- Main login form container -->
     <div class="login-container">
         <h1>Login</h1>
         <form id="loginForm" onsubmit="return validateLogin();">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" name="action" value="Login">
-            <button type="button" onclick="window.location.href='signup_page.html'">Sign Up</button>
+            <input type="text" 
+                   name="username" 
+                   placeholder="Username" 
+                   required 
+                   autocomplete="username">
+            <input type="password" 
+                   name="password" 
+                   placeholder="Password" 
+                   required 
+                   autocomplete="current-password">
+            <input type="submit" 
+                   name="action" 
+                   value="Login">
+            <button type="button" 
+                    onclick="window.location.href='signup_page.html'">
+                Sign Up
+            </button>
         </form>
     </div>
 </body>
+</html>
