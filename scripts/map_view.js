@@ -1,5 +1,4 @@
 
-
 // Global variables
 let locations = [];
 let connections = [];
@@ -11,11 +10,70 @@ let offsetX, offsetY;
 let newLocationX, newLocationY;
 let activeLocation = null;
 let activeEntry = null;
+let selectedLocation = null;
+const DEFAULT_ICON_PATH = 'assets/location icons/architect default location node.png';
+const iconModal = document.getElementById('iconModal');
+const iconGrid = document.getElementById('iconGrid');
 
-// Default icon for locations
-const locationIcon = new Image();
-locationIcon.src = 'assets/architect default location node.png';
 
+document.getElementById('customize-location').addEventListener('click', function(event) {
+    event.preventDefault();
+    activeTool = 'customize';
+    console.log('Customize Location tool selected, activeTool =', activeTool);
+    alert('Customize Location tool selected. Click on a location to change its icon.');
+});
+function showIconSelection() {
+    const iconModal = document.getElementById('iconModal');
+    const iconGrid = document.getElementById('iconGrid');
+    
+    console.log('Modal element:', iconModal);
+    console.log('Grid element:', iconGrid);
+    
+    iconGrid.innerHTML = '';
+    
+    const iconFiles = [
+        'architect default location node.png',
+        'apartment icon.png',
+        'castle icon.png'
+    ];
+    
+    iconFiles.forEach(iconFile => {
+        const img = document.createElement('img');
+        img.src = `assets/location icons/${iconFile}`;
+        img.className = 'icon-option';
+        iconGrid.appendChild(img);
+        console.log(`Added icon: ${iconFile}`);
+        
+        // Add click event listener to each icon image
+        img.addEventListener('click', function() {
+            // Update the icon of the selected location
+            if (selectedLocation) {
+                selectedLocation.iconPath = img.src;
+                redrawCanvas();
+            }
+            // Close the modal
+            iconModal.style.display = 'none';
+            console.log('Icon selected:', iconFile);
+        });
+    });
+    
+    iconModal.style.display = 'block';
+    console.log('Modal display set to:', iconModal.style.display);
+}
+
+
+
+
+function addLocation(name, x, y) {
+    const location = { 
+        name: name, 
+        x: x, 
+        y: y,
+        iconPath: DEFAULT_ICON_PATH  // Set the default icon path
+    };
+    locations.push(location);
+    redrawCanvas();
+}
 
 // Canvas setup
 const canvas = document.getElementById('mapCanvas');
@@ -27,7 +85,6 @@ function resizeCanvas() {
     canvas.height = canvas.clientHeight;
     redrawCanvas();
 }
-
 
 function redrawCanvas() {
     // Clear the canvas
@@ -42,17 +99,24 @@ function redrawCanvas() {
         ctx.lineWidth = 2;
         ctx.stroke();
     });
+
     // Draw locations
     locations.forEach(loc => {
-        // Draw the location icon
-        const iconSize = 20; // This matches the current circle diameter (2 * radius)
-        ctx.drawImage(
-            locationIcon, 
-            loc.x - iconSize/2, 
-            loc.y - iconSize/2, 
-            iconSize, 
-            iconSize
-        );
+        // Load the icon image
+        const iconImage = new Image();
+        iconImage.src = loc.iconPath;
+
+        // Draw the icon after the image has loaded
+        iconImage.onload = function() {
+            const iconSize = 20; // Adjust this size if needed
+            ctx.drawImage(
+                iconImage,
+                loc.x - iconSize / 2,
+                loc.y - iconSize / 2,
+                iconSize,
+                iconSize
+            );
+        };
 
         // Create or update text element
         let textElement = document.getElementById(`location-text-${loc.name}`);
@@ -62,13 +126,14 @@ function redrawCanvas() {
             textElement.className = 'location-text';
             document.querySelector('.map-section').appendChild(textElement);
         }
-        
+
         // Position the text
         textElement.style.left = `${loc.x + 15}px`;
         textElement.style.top = `${loc.y - 10}px`;
         textElement.textContent = loc.name;
     });
-    // If a line is currently being drawn (for connecting locations)
+
+    // Draw current line if connecting locations
     if (currentLine && currentLine.start) {
         ctx.beginPath();
         ctx.moveTo(currentLine.start.x, currentLine.start.y);
@@ -78,6 +143,8 @@ function redrawCanvas() {
         ctx.stroke();
     }
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -167,6 +234,9 @@ canvas.addEventListener('mouseup', function () {
 
 canvas.addEventListener('click', function (e) {
     const { x, y } = getCanvasCoordinates(e);
+    console.log('Canvas clicked at coordinates:', x, y);
+    console.log('Current active tool:', activeTool);
+    console.log('Current locations:', locations); // Add this to see available locations
 
     if (activeTool === 'create') {
         newLocationX = x;
@@ -192,6 +262,15 @@ canvas.addEventListener('click', function (e) {
         const location = locations.find(loc => isNear(loc, x, y));
         if (location) {
             openSidePane(location);
+        }
+    } else if (activeTool === 'customize') {
+        console.log('Checking for location near click...');
+        const location = locations.find(loc => isNear(loc, x, y));
+        console.log('Location found:', location); // This will show if a location was found
+        if (location) {
+            selectedLocation = location;
+            console.log('Selected location:', selectedLocation);
+            showIconSelection();
         }
     }
 });
@@ -228,6 +307,14 @@ window.addEventListener('click', function (event) {
         locationModal.style.display = 'none';
     }
 });
+
+// Add modal close functionality
+document.getElementById('closeIconModal').addEventListener('click', function() {
+    document.getElementById('iconModal').style.display = 'none';
+    console.log('Icon modal closed');
+});
+
+
 
 // Side pane functionality
 closeSidePaneButton.addEventListener('click', function () {
@@ -325,14 +412,12 @@ function setEntryMode(mode) {
         editModeButton.classList.add('active')
     }
 }
+
+document.getElementById('closeIconModal').addEventListener('click', () => {
+    document.getElementById('iconModal').style.display = 'none';
 });
 
 
-function addLocation(name, x, y) {
-    const location = { name: name, x: x, y: y };
-    locations.push(location);
-    redrawCanvas();
-}
 
 function isNear(loc, x, y) {
     const dx = loc.x - x;
@@ -340,3 +425,60 @@ function isNear(loc, x, y) {
     const distance = Math.sqrt(dx * dx + dy * dy);
     return distance < 15; // Adjust the threshold value if needed
 }
+
+function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'px', [canvas.width, canvas.height]);
+
+    // First page: Map
+    html2canvas(canvas).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+
+        // Sort locations alphabetically
+        const sortedLocations = [...locations].sort((a, b) => 
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        );
+
+        // Add location entries to subsequent pages
+        sortedLocations.forEach((location, index) => {
+            pdf.addPage();
+            
+            // Location header
+            pdf.setFontSize(24);
+            pdf.text(location.name, 20, 30);
+            
+            // Sort entries alphabetically
+            const sortedEntries = [...(location.entries || [])].sort((a, b) => 
+                a.header.toLowerCase().localeCompare(b.header.toLowerCase())
+            );
+            
+            // Add entries
+            let yPosition = 60;
+            sortedEntries.forEach(entry => {
+                pdf.setFontSize(16);
+                pdf.text(entry.header, 20, yPosition);
+                
+                pdf.setFontSize(12);
+                const bodyLines = pdf.splitTextToSize(entry.body, pdf.internal.pageSize.width - 40);
+                pdf.text(bodyLines, 20, yPosition + 20);
+                
+                yPosition += 40 + (bodyLines.length * 15);
+                
+                // Add new page if we're running out of space
+                if (yPosition > pdf.internal.pageSize.height - 40) {
+                    pdf.addPage();
+                    yPosition = 40;
+                }
+            });
+        });
+
+        pdf.save('world_map.pdf');
+    });
+}
+
+// Add event listener for the export button
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('export-pdf').addEventListener('click', exportToPDF);
+});
+});

@@ -79,13 +79,13 @@ button, .dropbtn {
 .modal {
     display: none;
     position: fixed;
-    z-index: 100;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    pointer-events: auto;
 }
 
 /* Modal content */
@@ -94,11 +94,10 @@ button, .dropbtn {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 300px;
-    border-radius: 8px;
-}
-
-/* Close button */
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}/* Close button */
 .close-button {
     float: right;
     font-size: 28px;
@@ -231,4 +230,38 @@ button, .dropbtn {
     font-weight: bold;
     font-size: 16px;
     text-shadow: 1px 1px 2px white;
+}
+
+#export-pdf {
+    background-color: #6e9fba;
+    margin-left: 10px;
+}
+
+#export-pdf:hover {
+    background-color: #55bffa;
+}
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.modal {
+    z-index: 1000;
+}
+
+.icon-option {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    padding: 5px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.icon-option:hover {
+    border-color: #6e9fba;
 }

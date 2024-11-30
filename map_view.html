@@ -22,9 +22,10 @@
                             <a href="#" id="connect-locations">Connect Locations</a>
                             <a href="#" id="edit-location">Edit Location</a>
                             <a href="#" id="enter-location">Enter Location</a>
+                            <a href="#" id="customize-location">Customize Location</a>
                         </div>
-                    </div>
                 </div>
+                <button id="export-pdf" class="dropbtn">Export PDF</button>
             </div>
         </nav>
     </header>
@@ -56,6 +57,10 @@
     <footer>
         <p>© 2024 Zach Hightower</p>
     </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 </body>
 <script src="scripts/map_view.js"></script>
 </html>
@@ -68,5 +73,13 @@
         <label for="locationName">Location Name:</label>
         <input type="text" id="locationName" name="locationName">
         <button id="addLocationButton">Add Location</button>
+    </div>
+</div>
+<!-- Modal for customizing location icons -->
+<div id="iconModal" class="modal">
+    <div class="modal-content">
+        <span id="closeIconModal" class="close-button">×</span>
+        <h2>Choose Location Icon</h2>
+        <div id="iconGrid" class="icon-grid"></div>
     </div>
 </div>
