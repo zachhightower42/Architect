@@ -57,4 +57,47 @@ if ($action == 'delete_world') {
     $conn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
   }
-}?>
+}
+// Add new action handler for account deletion
+if ($action == 'delete_account') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $user_id = $data['user_id'];
+
+    // Start transaction
+    $dbConn->beginTransaction();
+
+    try {
+        // Delete all entries associated with user's worlds
+        $stmt = $dbConn->prepare("DELETE e FROM entry e 
+            INNER JOIN world w ON e.world_id = w.world_id 
+            WHERE w.user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        // Delete all locations associated with user's worlds
+        $stmt = $dbConn->prepare("DELETE l FROM location l 
+            INNER JOIN world w ON l.world_id = w.world_id 
+            WHERE w.user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        // Delete all worlds associated with the user
+        $stmt = $dbConn->prepare("DELETE FROM world WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        // Finally, delete the user
+        $stmt = $dbConn->prepare("DELETE FROM `user` WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        // Commit transaction
+        $dbConn->commit();
+        echo json_encode(['success' => true]);
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $dbConn->rollback();
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+?>

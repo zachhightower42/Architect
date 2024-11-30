@@ -185,3 +185,12 @@ button:hover,
   margin: 0 0 1rem 0;
   color: #333333;
 }
+
+#delete-account-button {
+    background-color: #ba6e6e;
+    margin-right: 10px;
+}
+
+#delete-account-button:hover {
+    background-color: #fa5555;
+}

@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     padding: 1rem;
-    background-color: #333;
+    background-color: #a58e6f;;
     color: #fff;
 }
 
@@ -18,7 +18,7 @@
 }
 
 button, .dropbtn {
-    background-color: #333;
+    background-color: #6e9fba;
     color: white;
     padding: 10px;
     font-size: 16px;
@@ -57,7 +57,7 @@ button, .dropbtn {
 }
 
 .dropdown:hover .dropbtn {
-    background-color: #555;
+    background-color:#55bffa;
 }
 
 .map-section {

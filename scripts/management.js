@@ -113,3 +113,24 @@ window.onload = function() {
             window.location.href = 'login_page.html';
         });
 };
+
+function deleteAccount() {
+    if (confirm("Are you sure you want to delete your account and everything you've made?")) {
+        fetch('database/login_handler.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=Delete User`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "login_page.html";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
