@@ -22,7 +22,7 @@ let activeEntry = null;
 let selectedLocation = null;
 
 // Constants
-const DEFAULT_ICON_PATH = 'assets/location icons/architect default location node.png';
+const DEFAULT_ICON_PATH = 'assets/location_icons/default_location.png';
 const iconModal = document.getElementById('iconModal');
 const iconGrid = document.getElementById('iconGrid');
 
@@ -45,14 +45,14 @@ function showIconSelection() {
     iconGrid.innerHTML = '';
     
     const iconFiles = [
-        'architect default location node.png',
-        'apartment icon.png',
-        'castle icon.png'
+        'default_location.png',
+        'apartment_icon.png',
+        'castle_icon.png'
     ];
     
     iconFiles.forEach(iconFile => {
         const img = document.createElement('img');
-        img.src = `assets/location icons/${iconFile}`;
+        img.src = `assets/location_icons/${iconFile}`;
         img.className = 'icon-option';
         
         img.addEventListener('click', function() {
@@ -100,6 +100,8 @@ function resizeCanvas() {
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const imagePromises = [];
+
     // Draw connections
     connections.forEach(([start, end]) => {
         ctx.beginPath();
@@ -114,18 +116,28 @@ function redrawCanvas() {
     locations.forEach(loc => {
         const iconImage = new Image();
         iconImage.src = loc.iconPath;
-        
-        iconImage.onload = function() {
-            const iconSize = 20;
-            ctx.drawImage(
-                iconImage,
-                loc.x - iconSize / 2,
-                loc.y - iconSize / 2,
-                iconSize,
-                iconSize
-            );
-        };
 
+        const imagePromise = new Promise((resolve, reject) => {
+            iconImage.onload = function() {
+                const iconSize = 30;
+                ctx.drawImage(
+                    iconImage,
+                    loc.x - iconSize / 2,
+                    loc.y - iconSize / 2,
+                    iconSize,
+                    iconSize
+                );
+                resolve();
+            };
+            iconImage.onerror = function() {
+                console.error('Error loading image:', loc.iconPath);
+                reject(new Error(`Failed to load image: ${loc.iconPath}`));
+            };
+        });
+
+        imagePromises.push(imagePromise);
+
+        // Location text labels
         let textElement = document.getElementById(`location-text-${loc.name}`);
         if (!textElement) {
             textElement = document.createElement('div');
@@ -139,15 +151,8 @@ function redrawCanvas() {
         textElement.textContent = loc.name;
     });
 
-    // Draw active connection line
-    if (currentLine && currentLine.start) {
-        ctx.beginPath();
-        ctx.moveTo(currentLine.start.x, currentLine.start.y);
-        ctx.lineTo(currentMousePosition.x, currentMousePosition.y);
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-    }
+    // Return a promise that resolves when all images are loaded
+    return Promise.all(imagePromises);
 }
 
 /**
@@ -393,52 +398,82 @@ document.addEventListener('DOMContentLoaded', function () {
         return Math.sqrt(dx * dx + dy * dy) < 15;
     }
 
+
+    document.getElementById('export-pdf').addEventListener('click', exportToPDF);
     /**
-     * PDF Export Functionality
+     * PDF Export Function
      * Handles the export of map and entries to PDF
      */
     function exportToPDF() {
+        console.log("Starting exportToPDF function.");
+    
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('l', 'px', [canvas.width, canvas.height]);
-
-        html2canvas(canvas).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-
-            const sortedLocations = [...locations].sort((a, b) => 
-                a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-            );
-
-            sortedLocations.forEach(location => {
-                pdf.addPage();
-                pdf.setFontSize(24);
-                pdf.text(location.name, 20, 30);
-                
-                const sortedEntries = [...(location.entries || [])].sort((a, b) => 
-                    a.header.toLowerCase().localeCompare(b.header.toLowerCase())
+    
+        redrawCanvas().then(() => {
+            console.log("Canvas redraw complete.");
+    
+            const mapSection = document.querySelector('.map-section');
+    
+            html2canvas(mapSection, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: true,
+                onclone: (clonedDoc) => {
+                    console.log('Document cloned for html2canvas.');
+                }
+            }).then(canvas => {
+                console.log('Canvas captured by html2canvas.');
+    
+                // Create PDF with A4 dimensions
+                const pdf = new jsPDF('l', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+                // Add the map image
+                pdf.addImage(
+                    canvas.toDataURL('image/png', 1.0),
+                    'PNG',
+                    0,
+                    0,
+                    pdfWidth,
+                    pdfHeight
                 );
-                
-                let yPosition = 60;
-                sortedEntries.forEach(entry => {
+    
+                // Add location entries
+                locations.forEach(location => {
+                    pdf.addPage();
                     pdf.setFontSize(16);
-                    pdf.text(entry.header, 20, yPosition);
-                    
-                    pdf.setFontSize(12);
-                    const bodyLines = pdf.splitTextToSize(entry.body, pdf.internal.pageSize.width - 40);
-                    pdf.text(bodyLines, 20, yPosition + 20);
-                    
-                    yPosition += 40 + (bodyLines.length * 15);
-                    
-                    if (yPosition > pdf.internal.pageSize.height - 40) {
-                        pdf.addPage();
-                        yPosition = 40;
+                    pdf.text(location.name, 10, 20);
+    
+                    if (location.entries) {
+                        let yPosition = 30;
+                        location.entries.forEach(entry => {
+                            pdf.setFontSize(12);
+                            pdf.text(entry.header, 10, yPosition);
+                            yPosition += 10;
+    
+                            const splitText = pdf.splitTextToSize(entry.body, pdfWidth - 20);
+                            pdf.text(splitText, 10, yPosition);
+                            yPosition += (splitText.length * 7) + 10;
+    
+                            if (yPosition > pdfHeight - 20) {
+                                pdf.addPage();
+                                yPosition = 20;
+                            }
+                        });
                     }
                 });
+    
+                pdf.save('world_map.pdf');
+            }).catch(error => {
+                console.error('Error during PDF generation:', error);
+                alert('An error occurred while generating the PDF. Please try again.');
             });
-
-            pdf.save('world_map.pdf');
+        }).catch(error => {
+            console.error('Error during canvas redraw:', error);
+            alert('An error occurred while preparing the canvas. Please try again.');
         });
     }
 
-    document.getElementById('export-pdf').addEventListener('click', exportToPDF);
 });
