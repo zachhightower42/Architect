@@ -41,6 +41,7 @@
                             <a href="#" id="edit-location">Edit Location</a>
                             <a href="#" id="enter-location">Enter Location</a>
                             <a href="#" id="customize-location">Customize Location</a>
+                            <a href="#" id="delete-location">Delete Location</a>
                         </div>
                     </div>
                     <button id="export-pdf" class="dropbtn">Export PDF</button>
@@ -92,6 +93,16 @@
         </div>
     </div>
 
+    <!-- Location Deletion Modal -->
+    <div id="deleteLocationModal" class="modal">
+        <div class="modal-content">
+            <span id="closeDeleteModal" class="close-button">×</span>
+            <h2>Delete Location</h2>
+            <p>Are you sure you want to delete this location?</p>
+            <button id="confirmDeleteButton">Yes, Delete</button>
+            <button id="cancelDeleteButton">Cancel</button>
+        </div>
+    </div>
     <!-- Icon Customization Modal -->
     <div id="iconModal" class="modal">
         <div class="modal-content">
@@ -108,3 +119,13 @@
     <script src="scripts/map_view.js"></script>
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const worldId = new URLSearchParams(window.location.search).get('id');
+        if (!worldId) {
+            window.location.href = 'world_selection_and_management_screen.html';
+        }
+        loadLocations();
+    });
+</script>

@@ -6,8 +6,6 @@
  * - Entry management for locations
  * - PDF export functionality
  * - Canvas drawing and event handling
- */
-
 // Global state management
 let locations = [];
 let connections = [];
@@ -25,11 +23,12 @@ let selectedLocation = null;
 const DEFAULT_ICON_PATH = 'assets/location_icons/default_location.png';
 const iconModal = document.getElementById('iconModal');
 const iconGrid = document.getElementById('iconGrid');
+const worldId = new URLSearchParams(window.location.search).get('id');
 
 /**
- * Location Customization Tool
- * Handles the icon customization functionality for locations
- */
+  * Location Customization Tool
+  * Handles the icon customization functionality for locations
+  */
 document.getElementById('customize-location').addEventListener('click', function(event) {
     event.preventDefault();
     activeTool = 'customize';
@@ -38,16 +37,61 @@ document.getElementById('customize-location').addEventListener('click', function
 });
 
 /**
- * Icon Selection Modal
- * Displays available icons and handles icon selection
- */
+  * Icon Selection Modal
+  * Displays available icons and handles icon selection
+  */
 function showIconSelection() {
+
+async function loadLocations() {
+    try {
+        const response = await fetch(`database/map_view_handler.php?action=get_locations&world_id=${worldId}`);
+        const data = await response.json();
+        locations = data.map(loc => ({
+            id: loc.location_id,
+            name: loc.location_name,
+            x: loc.position_X,
+            y: loc.position_Y,
+            iconPath: loc.icon_path_location || DEFAULT_ICON_PATH
+        }));
+        redrawCanvas();
+    } catch (error) {
+        console.error('Error loading locations:', error);
+    }
+}
+
+async function addLocation(name, x, y) {
+    try {
+        const response = await fetch('database/map_view_handler.php?action=create_location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                location_name: name,
+                world_id: worldId,
+                position_X: x,
+                position_Y: y,
+                icon_path_location: DEFAULT_ICON_PATH
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            await loadLocations();
+        }
+    } catch (error) {
+        console.error('Error creating location:', error);
+    }
+}
     iconGrid.innerHTML = '';
     
     const iconFiles = [
         'default_location.png',
         'apartment_icon.png',
-        'castle_icon.png'
+        'castle_icon.png',
+        'gate_icon.png',
+        'teepee_icon.png',
+        'trees_icon.png',
+        'mountain_icon.png'
     ];
     
     iconFiles.forEach(iconFile => {
@@ -73,12 +117,16 @@ function showIconSelection() {
  * Location Management
  * Handles location creation and storage
  */
+let locationIdCounter = 0;
+
 function addLocation(name, x, y) {
     const location = { 
+        id: `loc-${locationIdCounter++}`,  // Unique ID
         name: name, 
         x: x, 
         y: y,
-        iconPath: DEFAULT_ICON_PATH
+        iconPath: DEFAULT_ICON_PATH,
+        entries: [] // Initialize entries here to avoid undefined errors later
     };
     locations.push(location);
     redrawCanvas();
@@ -138,10 +186,10 @@ function redrawCanvas() {
         imagePromises.push(imagePromise);
 
         // Location text labels
-        let textElement = document.getElementById(`location-text-${loc.name}`);
+        let textElement = document.getElementById(`location-text-${loc.id}`);
         if (!textElement) {
             textElement = document.createElement('div');
-            textElement.id = `location-text-${loc.name}`;
+            textElement.id = `location-text-${loc.id}`;
             textElement.className = 'location-text';
             document.querySelector('.map-section').appendChild(textElement);
         }
@@ -190,7 +238,8 @@ document.addEventListener('DOMContentLoaded', function () {
         'create-location': 'create',
         'connect-locations': 'connect',
         'edit-location': 'edit',
-        'enter-location': 'enter'
+        'enter-location': 'enter',
+        'delete-location': 'delete'
     };
 
     Object.entries(tools).forEach(([id, tool]) => {
@@ -261,9 +310,28 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectedLocation = location;
                     showIconSelection();
                 }
+            },
+            'delete': () => {
+                if (location) {
+                    // Remove connections involving this location
+                    connections = connections.filter(conn => 
+                        conn[0] !== location && conn[1] !== location
+                    );
+                    
+                    // Remove the location from the locations array
+                    locations.splice(locations.indexOf(location), 1);
+
+                    // Remove the text label associated with the location
+                    const textElement = document.getElementById(`location-text-${location.id}`);
+                    if (textElement) {
+                        textElement.parentNode.removeChild(textElement);
+                    }
+
+                    // Redraw the canvas to reflect changes
+                    redrawCanvas();
+                }
             }
         };
-
         if (toolActions[activeTool]) {
             toolActions[activeTool]();
         }

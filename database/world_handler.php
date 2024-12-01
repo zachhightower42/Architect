@@ -3,6 +3,19 @@ require 'connec_scrip.php';
 
 $action = $_GET['action'];
 
+if ($action == 'get_worlds') {
+  $user_id = $_SESSION['user_id']; // Or retrieve as needed
+
+  $stmt = $dbConn->prepare("SELECT world_id, world_name, world_desc FROM world WHERE user_id = ?");
+  $stmt->bind_param('i', $user_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $worlds = $result->fetch_all(MYSQLI_ASSOC);
+
+  echo json_encode($worlds);
+  $stmt->close();
+}
+
 if ($action == 'create_world') {
   // Get the raw POST data
   $data = json_decode(file_get_contents('php://input'), true);
@@ -28,33 +41,35 @@ if ($action == 'delete_world') {
   $world_id = $data['world_id'];
 
   // Start transaction
-  $conn->begin_transaction();
+  $dbConn->begin_transaction();
 
   try {
-    // Delete entries associated with the world
-    $stmt = $conn->prepare("DELETE FROM entry WHERE world_id = ?");
-    $stmt->bind_param('i', $world_id);
-    $stmt->execute();
-    $stmt->close();
+      // Delete entries associated with the world
+      $stmt = $dbConn->prepare("DELETE e FROM entry e
+        JOIN location l ON e.location_id = l.location_id
+        WHERE l.world_id = ?");
+      $stmt->bind_param('i', $world_id);
+      $stmt->execute();
+      $stmt->close();
 
     // Delete locations associated with the world
-    $stmt = $conn->prepare("DELETE FROM location WHERE world_id = ?");
+    $stmt = $dbConn->prepare("DELETE FROM location WHERE world_id = ?");
     $stmt->bind_param('i', $world_id);
     $stmt->execute();
     $stmt->close();
 
     // Delete the world
-    $stmt = $conn->prepare("DELETE FROM world WHERE world_id = ?");
+    $stmt = $dbConn->prepare("DELETE FROM world WHERE world_id = ?");
     $stmt->bind_param('i', $world_id);
     $stmt->execute();
     $stmt->close();
 
     // Commit transaction
-    $conn->commit();
+    $dbConn->commit();
     echo json_encode(['success' => true]);
   } catch (Exception $e) {
     // Rollback transaction on error
-    $conn->rollback();
+    $dbConn->rollback();
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
   }
 }
@@ -67,12 +82,13 @@ if ($action == 'delete_account') {
     $dbConn->beginTransaction();
 
     try {
-        // Delete all entries associated with user's worlds
-        $stmt = $dbConn->prepare("DELETE e FROM entry e 
-            INNER JOIN world w ON e.world_id = w.world_id 
+          // Delete all entries associated with user's worlds
+          $stmt = $dbConn->prepare("DELETE e FROM entry e
+            JOIN location l ON e.location_id = l.location_id
+            JOIN world w ON l.world_id = w.world_id
             WHERE w.user_id = :user_id");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
+          $stmt->bindParam(':user_id', $user_id);
+          $stmt->execute();
 
         // Delete all locations associated with user's worlds
         $stmt = $dbConn->prepare("DELETE l FROM location l 

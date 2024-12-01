@@ -292,3 +292,11 @@ button, .dropbtn {
 .icon-option:hover {
     border-color: #6e9fba;
 }
+
+#mapCanvas.delete-mode {
+    cursor: not-allowed;
+}
+
+#mapCanvas.delete-mode:hover {
+    opacity: 0.9;
+}
