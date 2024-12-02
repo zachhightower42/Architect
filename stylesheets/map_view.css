@@ -255,11 +255,17 @@ button, .dropbtn {
  * ================= */
 .location-text {
     position: absolute;
-    z-index: 20;
-    pointer-events: none;
     font-weight: bold;
     font-size: 16px;
     text-shadow: 1px 1px 2px white;
+    cursor: pointer;
+    user-select: none;
+    z-index: 100;
+}
+
+.location-text:hover {
+    background-color: rgba(200, 200, 200, 0.2);
+    border-radius: 3px;
 }
 
 #export-pdf {

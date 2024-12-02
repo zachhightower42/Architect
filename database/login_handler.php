@@ -20,25 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Verify the user's credentials
     if ($user && password_verify($password, $user['password'])) {
+        $allowedActions = ['Login'];
+        if (!in_array($action, $allowedActions)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid action']);
+            exit();
+        }
+        
         if ($action == 'Login') {
             // Handle Login
             session_start();
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['username'] = $user['user_name'];
             echo json_encode(['success' => true, 'message' => 'Login successful']);
-        } elseif ($action == 'Delete User') {
-            // Handle Delete User
-            // Delete the user from the database
-            $deleteStmt = $dbConn->prepare("DELETE FROM `user` WHERE user_id = :user_id");
-            $deleteStmt->bindParam(':user_id', $user['user_id']);
-            $deleteStmt->execute();
-
-            // Destroy the session if any
-            session_start();
-            session_unset();
-            session_destroy();
-
-            echo json_encode(['success' => true, 'message' => 'User deleted successfully']);
         } else {
             // Invalid action
             echo json_encode(['success' => false, 'message' => 'Invalid action']);
@@ -48,4 +41,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'Invalid credentials']);
     }
 }
-?>
