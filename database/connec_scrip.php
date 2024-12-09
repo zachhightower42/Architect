@@ -1,20 +1,26 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_PORT', '3306');       
-define('DB_NAME', 'zphighto');       
-define('DB_USER', 'zphighto');   
-define('DB_PASS', 'Melancholia42!');       
+// Database connection constants
+define('DB_HOST', 'localhost');    // Database host
+define('DB_PORT', '3306');        // MySQL port number
+define('DB_NAME', 'zphighto');    // Database name
+define('DB_USER', 'zphighto');    // Database username
+define('DB_PASS', 'Melancholia42!'); // Database password
 
 try {
-   $dbConn = new PDO('mysql:host=' . DB_HOST . ';'
-                     . 'port=' . DB_PORT . ';'
-                     . 'dbname=' . DB_NAME,
-                     DB_USER,
-                     DB_PASS);
-   $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-   // echo "Connected";
+    // Create new PDO connection
+    $dbConn = new PDO('mysql:host=' . DB_HOST . ';'
+                      . 'port=' . DB_PORT . ';'
+                      . 'dbname=' . DB_NAME,
+                      DB_USER,
+                      DB_PASS);
+    
+    // Set PDO to throw exceptions on error
+    $dbConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // echo "Connected";
 } catch (PDOException $e) {
-   $fileName = basename($e->getFile(), ".php");
-   $lineNumber = $e->getLine();         
-   die("[$fileName][$lineNumber] Database connect failed: " . $e->getMessage() . '<br />');
+    // Get error details
+    $fileName = basename($e->getFile(), ".php");
+    $lineNumber = $e->getLine();         
+    // Display error message with file and line information
+    die("[$fileName][$lineNumber] Database connect failed: " . $e->getMessage() . '<br />');
 }

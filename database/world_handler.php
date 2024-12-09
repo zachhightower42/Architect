@@ -1,17 +1,35 @@
 <?php
+/**
+ * World Management Handler
+ * This script handles various operations related to world management including
+ * creating, retrieving, deleting worlds and deleting user accounts.
+ * 
+ * PHP Version 7.4+
+ */
+// Initialize session and include required files
 session_start();
 require 'connec_scrip.php';
+
+// Configure error reporting for debugging
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
   error_log('Session user_id not set. Session data: ' . print_r($_SESSION, true));
   echo json_encode(['success' => false, 'message' => 'User not logged in.']);
   exit;
 }
+
+// Get the requested action from URL parameters
 $action = $_GET['action'];
 
+/**
+ * Retrieve all worlds belonging to the current user
+ * Returns a JSON response with world details
+ */
 if ($action == 'get_worlds') {
   $user_id = $_SESSION['user_id'];
 
@@ -22,7 +40,14 @@ if ($action == 'get_worlds') {
 
   // Ensure we're sending a proper array response
   echo json_encode(['success' => true, 'worlds' => $worlds]);
-}if ($action == 'create_world') {
+}
+
+/**
+ * Create a new world for the current user
+ * Accepts POST parameters for world name and description
+ * Returns JSON response with success status and new world ID
+ */
+if ($action == 'create_world') {
     // Log incoming data
     error_log("Creating world with data: " . print_r($_POST, true));
     error_log("User ID from session: " . $_SESSION['user_id']);
@@ -64,7 +89,13 @@ if ($action == 'get_worlds') {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
     exit;
-  }
+}
+
+/**
+ * Delete a specific world and all its associated data
+ * Handles cascading deletion of connections, entries, and locations
+ * Returns JSON response indicating success or failure
+ */
 if ($action == 'delete_world') {
     $world_id = $_POST['world_id'];
 
@@ -97,7 +128,15 @@ if ($action == 'delete_world') {
         $dbConn->rollBack();
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
-}if ($action == 'delete_account') {
+}
+
+/**
+ * Delete a user account and all associated data
+ * Performs cascading deletion of all user content including worlds, locations, and entries
+ * Destroys the session after successful deletion
+ * Returns JSON response indicating success or failure
+ */
+if ($action == 'delete_account') {
     $data = json_decode(file_get_contents('php://input'), true);
     $user_id = $data['user_id'];
 

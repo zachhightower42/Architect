@@ -1,5 +1,11 @@
 <?php
-// Add at the very start of the file, before any output
+/**
+ * Map View Handler
+ * This file handles all AJAX requests for the interactive map functionality
+ * including location management, entries, and connections between locations.
+ */
+
+// Initialize session and set up response headers
 session_start();
 header('Content-Type: application/json');
 header('Cache-Control: no-cache, must-revalidate');
@@ -14,6 +20,10 @@ require 'connec_scrip.php';
 
 $action = $_GET['action'];
 
+/**
+ * Location Retrieval
+ * Fetches all locations for a specific world
+ */
 if ($action == 'get_locations') {
     $world_id = $_GET['world_id'];
     
@@ -29,6 +39,10 @@ if ($action == 'get_locations') {
     exit;
 }
 
+/**
+ * Location Creation
+ * Creates a new location with specified parameters
+ */
 if ($action == 'create_location') {
                          $data = json_decode(file_get_contents('php://input'), true);
     
@@ -55,6 +69,11 @@ if ($action == 'create_location') {
                              ]);
                          }
 }
+
+/**
+ * Location Update
+ * Updates an existing location's details
+ */
 if ($action == 'update_location') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -74,6 +93,10 @@ if ($action == 'update_location') {
     echo json_encode(['success' => $stmt->execute()]);
 }
 
+/**
+ * Location Deletion
+ * Deletes a location and all its associated connections and entries
+ */
 if ($action == 'delete_location') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -101,7 +124,13 @@ if ($action == 'delete_location') {
         $dbConn->rollBack();
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }
-}if ($action == 'get_entries') {
+}
+
+/**
+ * Entry Management
+ * Retrieves all entries for a specific location
+ */
+if ($action == 'get_entries') {
     $location_id = $_GET['location_id'];
     
     $stmt = $dbConn->prepare("SELECT entry_id, entry_name as header, entry_body as body FROM entry WHERE location_id = :location_id");
@@ -116,6 +145,10 @@ if ($action == 'delete_location') {
     exit;
 }
 
+/**
+ * Entry Creation
+ * Creates a new entry for a location
+ */
 if ($action == 'create_entry') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -130,6 +163,10 @@ if ($action == 'create_entry') {
     echo json_encode(['success' => $stmt->execute()]);
 }
 
+/**
+ * Connection Management
+ * Creates a new connection between locations
+ */
 if ($action == 'create_connection') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -158,6 +195,10 @@ if ($action == 'create_connection') {
     }
 }
 
+/**
+ * Connection Retrieval
+ * Fetches all connections for a specific world
+ */
 if ($action == 'get_connections') {
     try {
         $stmt = $dbConn->prepare("SELECT * FROM connection WHERE location_id IN 
@@ -175,7 +216,13 @@ if ($action == 'get_connections') {
             'error' => $e->getMessage()
         ]);
     }
-}if ($action == 'update_location_position') {
+}
+
+/**
+ * Location Position Update
+ * Updates the X,Y coordinates of a location
+ */
+if ($action == 'update_location_position') {
     $data = json_decode(file_get_contents('php://input'), true);
     
     $stmt = $dbConn->prepare("UPDATE location 
@@ -190,6 +237,10 @@ if ($action == 'get_connections') {
     echo json_encode(['success' => $stmt->execute()]);
 }
 
+/**
+ * Connection Update
+ * Updates the coordinates of an existing connection
+ */
 if ($action == 'update_connections') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -220,6 +271,11 @@ if ($action == 'update_connections') {
         ]);
     }
 }
+
+/**
+ * Location Name Update
+ * Updates the name of a location
+ */
 if ($action == 'update_location_name') {
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -233,6 +289,10 @@ if ($action == 'update_location_name') {
     echo json_encode(['success' => $stmt->execute()]);
 }
 
+/**
+ * Entry Synchronization
+ * Synchronizes all entries for a location by replacing existing entries with new ones
+ */
 if ($action == 'sync_entries') {
     $data = json_decode(file_get_contents('php://input'), true);
     $locationId = $data['location_id'];
@@ -266,6 +326,10 @@ if ($action == 'sync_entries') {
     }
 }
 
+/**
+ * Location Icon Update
+ * Updates the icon path for a location
+ */
 if ($action == 'update_location_icon') {
     $data = json_decode(file_get_contents('php://input'), true);
     

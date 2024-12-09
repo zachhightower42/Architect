@@ -144,24 +144,6 @@ function showIconSelection() {
     iconModal.style.display = 'block';
 }
 
-/**
- * Location Management
- * Handles location creation and storage
- */
-/* let locationIdCounter = 0;
-
-function addLocation(name, x, y) {
-    const location = { 
-        id: `loc-${locationIdCounter++}`,  // Unique ID
-        name: name, 
-        x: x, 
-        y: y,
-        iconPath: DEFAULT_ICON_PATH,
-        entries: [] // Initialize entries here to avoid undefined errors later
-    };
-    locations.push(location);
-    redrawCanvas();
-} */
 
 /**
  * Canvas Management
@@ -259,7 +241,7 @@ function redrawCanvas() {
         alert('Failed to load locations. Check console for details.');
     }
 }
-// Global variables at the top
+
 let selectedLocationForEdit = null;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -546,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toolActions[activeTool]();
         }
     });
-// Add these at the top with other global variables
+
 let locationModal;
 let locationNameInput;
 let closeModalButton;
@@ -709,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function isNear(loc, x, y) {
-        const iconSize = 30; // Match the size used in redrawCanvas
+        const iconSize = 30; 
         const clickX = x - loc.x;
         const clickY = y - loc.y;
         return Math.abs(clickX) < iconSize/2 && Math.abs(clickY) < iconSize/2;
@@ -876,7 +858,6 @@ async function loadEntries(locationId) {
         return [];
     }
 }
-// Add these functions at the appropriate location in map_view.js
 
 // Store entries in session storage
 function storeEntriesInSession(locationId, entries) {
